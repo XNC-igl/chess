@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chess.com Daily Improvement Checklist</title>
+  <style>
+    /* ========== General Styles ========== */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f7f7f7;
+      margin: 40px;
+      color: #333;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    h1, h2, h3 {
+      color: #2c3e50;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    input[type="checkbox"] {
+      margin-right: 10px;
+      transform: scale(1.2);
+    }
+    .section {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+      transition: background 0.3s;
+    }
+    a {
+      color: #3498db;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .dark-mode {
+      background-color: #121212;
+      color: #e0e0e0;
+    }
+    .dark-mode .section {
+      background: #1e1e1e;
+    }
+    .switch-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 34px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "♟️";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      font-size: 22px;
+      line-height: 26px;
+      text-align: center;
+      background-color: transparent;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: #3498db;
+    }
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+    .toggle-label {
+      font-size: 18px;
+      margin-left: 12px;
+    }
+    .footer {
+      margin-top: 40px;
+      font-size: 16px;
+      text-align: center;
+    }
+    .purpose {
+      font-size: 18px;
+      margin-bottom: 30px;
+      background: #e8f0fe;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .dark-mode .purpose {
+      background: #1a1a2e;
+    }
+    /* ========== Chessboard Styles ========== */
+    #chessboard {
+      display: grid;
+      grid-template-columns: repeat(8, 60px);
+      grid-template-rows: repeat(8, 60px);
+      gap: 0;
+      margin: 30px auto;
+      width: 480px;
+      border: 4px solid #2c3e50;
+    }
+    .square {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .white {
+      background-color: #eee;
+    }
+    .black {
+      background-color: #769656;
+    }
+    .highlight {
+      outline: 3px solid yellow;
+    }
+    /* ========== Promotion Popup ========== */
+    #promotion-popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      border: 2px solid #333;
+      border-radius: 8px;
+      padding: 20px;
+      display: none;
+      z-index: 1000;
+      text-align: center;
+    }
+    #promotion-popup button {
+      margin: 5px;
+      font-size: 20px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+    .dark-mode #promotion-popup {
+      background: #333;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Dark Mode Switch -->
+<div class="switch-container">
+  <label class="switch">
+    <input type="checkbox" onclick="toggleDarkMode()">
+    <span class="slider"></span>
+  </label>
+  <span class="toggle-label">Toggle Dark Mode</span>
+</div>
+
+<!-- Main Title -->
+<h1>♟ Chess.com Daily Improvement Checklist</h1>
+
+<!-- Purpose Section -->
+<div class="purpose">
+  <h2>Purpose of This Website</h2>
+  <p>This checklist is designed to help chess players improve steadily by building daily habits. Built to be used alongside <a href="https://www.chess.com" target="_blank">Chess.com</a>.</p>
+</div>
+
+<!-- Daily Section -->
+<div class="section">
+  <h2>📅 Daily (About 30 Minutes)</h2>
+  <ul>
+    <li><input type="checkbox"> Puzzle Practice (5–10 min)</li>
+    <li><input type="checkbox"> Blunder Prevention (5 min)</li>
+    <li><input type="checkbox"> Opening Study (10 min)</li>
+    <li><input type="checkbox"> Play 1 Game (10 min)</li>
+  </ul>
+</div>
+
+<!-- Weekly Section -->
+<div class="section">
+  <h2>🔵 Weekly Tasks (Pick 1–2 Days)</h2>
+  <ul>
+    <li><input type="checkbox"> Game Reviews</li>
+    <li><input type="checkbox"> Opening Deep Dive</li>
+    <li><input type="checkbox"> Endgame Practice</li>
+  </ul>
+</div>
+
+<!-- Mindset Section -->
+<div class="section">
+  <h2>🧠 Mindset Reminders</h2>
+  <ul>
+    <li><input type="checkbox"> Always check captures and threats.</li>
+    <li><input type="checkbox"> Play slowly and carefully.</li>
+    <li><input type="checkbox"> Aim for zero blunders.</li>
+  </ul>
+</div>
+
+<!-- Chessboard Section -->
+<h2>♟️ Playable Chessboard</h2>
+<div id="chessboard"></div>
+<button onclick="newGame()">♻️ New Game</button>
+
+<!-- Promotion Popup -->
+<div id="promotion-popup">
+  <h3>Promote pawn to:</h3>
+  <button onclick="promote('q')">♛ Queen</button>
+  <button onclick="promote('r')">♜ Rook</button>
+  <button onclick="promote('b')">♝ Bishop</button>
+  <button onclick="promote('n')">♞ Knight</button>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>Questions? <a href="mailto:xnc.clxn@gmail.com">Contact me</a>.</p>
+</div>
+
+<!-- JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+
+<script>
+// Toggle Dark Mode
+function toggleDarkMode() {
+  document.body.classList.toggle('dark-mode');
+}
+
+// Debug Mode
+const debugMode = true; // Set to true to enable debug console logs
+
+// Chessboard Variables
+const board = document.getElementById('chessboard');
+const files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+const ranks = [8, 7, 6, 5, 4, 3, 2, 1];
+let selectedSquare = null;
+let chess = new Chess();
+let pendingMove = null;
+
+// Create Chessboard
+function createBoard() {
+  board.innerHTML = '';
+  for (let r = 0; r < 8; r++) {
+    for (let f = 0; f < 8; f++) {
+      const square = document.createElement('div');
+      square.className = 'square ' + ((r + f) % 2 === 0 ? 'white' : 'black');
+      square.id = files[f] + ranks[r];
+      square.addEventListener('click', () => handleSquareClick(square));
+      board.appendChild(square);
+    }
+  }
+}
+
+// Update Pieces on Board (Fixed Version)
+function updateBoard() {
+  // Clear all squares
+  for (const file of files) {
+    for (const rank of ranks) {
+      const square = document.getElementById(file + rank);
+      if (square) square.textContent = '';
+    }
+  }
+
+  // Set pieces on squares
+  const boardPosition = chess.board();
+  for (let r = 0; r < 8; r++) {
+    for (let f = 0; f < 8; f++) {
+      const piece = boardPosition[r][f];
+      if (piece) {
+        const square = document.getElementById(files[f] + ranks[r]);
+        square.textContent = pieceUnicode(piece);
+      }
+    }
+  }
+
+  // Debug output
+  if (debugMode) {
+    console.log('Board FEN:', chess.fen());
+    console.log('Board Position:', chess.board());
+  }
+}
+
+// Unicode Pieces
+function pieceUnicode(piece) {
+  const unicodePieces = {
+    p: '♟', r: '♜', n: '♞', b: '♝', q: '♛', k: '♚',
+    P: '♙', R: '♖', N: '♘', B: '♗', Q: '♕', K: '♔'
+  };
+  return unicodePieces[piece.color === 'w' ? piece.type.toUpperCase() : piece.type];
+}
+
+// Handle Moves
+function handleSquareClick(square) {
+  if (selectedSquare) {
+    const move = {
+      from: selectedSquare.id,
+      to: square.id
+    };
+    const moves = chess.moves({ square: selectedSquare.id, verbose: true });
+    const legalMove = moves.find(m => m.to === square.id);
+    if (legalMove) {
+      if (legalMove.flags.includes('p')) {
+        pendingMove = move;
+        document.getElementById('promotion-popup').style.display = 'block';
+      } else {
+        chess.move(move);
+        updateBoard();
+      }
+    }
+    selectedSquare.classList.remove('highlight');
+    selectedSquare = null;
+  } else {
+    const piece = chess.get(square.id);
+    if (piece && piece.color === chess.turn()) {
+      selectedSquare = square;
+      square.classList.add('highlight');
+    }
+  }
+}
+
+// Promotion
+function promote(pieceType) {
+  if (pendingMove) {
+    chess.move({
+      from: pendingMove.from,
+      to: pendingMove.to,
+      promotion: pieceType
+    });
+    pendingMove = null;
+    updateBoard();
+  }
+  document.getElementById('promotion-popup').style.display = 'none';
+}
+
+// New Game
+function newGame() {
+  chess.reset();
+  updateBoard();
+}
+
+// Initialize
+createBoard();
+updateBoard();
+</script>
+
+</body>
+</html>
